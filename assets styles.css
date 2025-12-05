@@ -1,0 +1,13 @@
+:root{--bg:#f7fafc;--accent:#0b5fff;--muted:#556;--card:#fff}
+*{box-sizing:border-box}
+body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--muted);margin:0}
+.container{max-width:900px;margin:32px auto;padding:0 18px}
+.site-header{background:linear-gradient(90deg,#ffffffcc,#f0f6ff);border-bottom:1px solid #e6eef9;padding:28px 0}
+.site-header h1{margin:0;font-size:28px;color:#0b2b66}
+.tagline{margin:6px 0 0;color:#334}
+h2{color:#0b2b66}
+ul,ol{color:#333}
+.links{margin:24px 0}
+.btn{display:inline-block;padding:10px 14px;border-radius:8px;background:var(--accent);color:#fff;text-decoration:none;margin-right:8px}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.legal{margin-top:40px;color:#556;font-size:14px}

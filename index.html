@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Secure Gmail Sender — Home</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>Secure Gmail Sender</h1>
+      <p class="tagline">A simple, secure tool that helps you send Gmail programmatically using OAuth 2.0.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section>
+      <h2>About</h2>
+      <p>
+        Secure Gmail Sender is an application that uses Google OAuth 2.0 for secure access to Gmail accounts. The app never stores user passwords — only the OAuth tokens required to send email on behalf of consenting users. Tokens are stored securely and are refreshed using Google’s recommended flows.
+      </p>
+    </section>
+
+    <section>
+      <h2>How it works</h2>
+      <ol>
+        <li>The user authorizes the app using the Google OAuth consent screen.</li>
+        <li>The app receives an authorization code and exchanges it for an access token + refresh token.</li>
+        <li>The app uses the access token to call Gmail API and may refresh tokens using the refresh token when needed.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Security & Data Handling</h2>
+      <ul>
+        <li>We only request the minimum Gmail scopes required to send messages.</li>
+        <li>Refresh tokens are stored encrypted (you must configure your storage back-end).</li>
+        <li>We never log plain-text tokens or user passwords.</li>
+      </ul>
+    </section>
+
+    <section class="links">
+      <a class="btn" href="/privacy.html">Privacy Policy</a>
+      <a class="btn ghost" href="/terms.html">Terms of Service</a>
+    </section>
+
+    <footer class="legal">
+      <p>Contact: <a href="mailto:makaimurphy007@gmail.com">makaimurphy007@gmail.com</a></p>
+      <p>&copy; <span id="year"></span> Secure Gmail Sender</p>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
