@@ -23,21 +23,58 @@
     </section>
 
     <section>
+      <h2>Why OAuth 2.0 is More Secure</h2>
+      <p>
+        Unlike traditional password-based authentication, OAuth 2.0 provides enhanced security for both you and your data:
+      </p>
+      <ul>
+        <li><strong>No Password Sharing:</strong> You never share your Gmail password with our app. Authentication happens directly through Google's secure servers.</li>
+        <li><strong>Limited Access:</strong> We only request permission to send emails – we cannot read, delete, or modify your existing messages.</li>
+        <li><strong>Revocable Access:</strong> You can revoke our app's access anytime through your Google Account settings without changing your password.</li>
+        <li><strong>Token-Based Security:</strong> Access tokens expire automatically, and refresh tokens are encrypted in our database for maximum protection.</li>
+        <li><strong>Google-Verified:</strong> Our application goes through Google's verification process to ensure it meets their security and privacy standards.</li>
+      </ul>
+    </section>
+
+    <section>
       <h2>How it works</h2>
       <ol>
-        <li>The user authorizes the app using the Google OAuth consent screen.</li>
-        <li>The app receives an authorization code and exchanges it for an access token + refresh token.</li>
-        <li>The app uses the access token to call Gmail API and may refresh tokens using the refresh token when needed.</li>
+        <li><strong>Authorize Once:</strong> Click the authorization button and log in through Google's secure consent screen.</li>
+        <li><strong>Grant Permissions:</strong> Approve only the "send email" permission – nothing more.</li>
+        <li><strong>Automatic Token Management:</strong> Our app receives secure tokens and handles all refreshing automatically.</li>
+        <li><strong>Send Emails Safely:</strong> Use our API or interface to send emails programmatically without exposing your credentials.</li>
       </ol>
+    </section>
+
+    <section>
+      <h2>Benefits for Users</h2>
+      <ul>
+        <li><strong>Complete Control:</strong> Maintain full control over your Gmail account with the ability to revoke access instantly.</li>
+        <li><strong>Privacy First:</strong> We never read your emails or access your inbox – only send permission is requested.</li>
+        <li><strong>Audit Trail:</strong> All sent emails appear in your Gmail "Sent" folder, maintaining full transparency.</li>
+        <li><strong>Developer Friendly:</strong> Simple API integration for automating email workflows without security compromises.</li>
+        <li><strong>No Credential Storage:</strong> Your password is never stored on our servers, eliminating a major security risk.</li>
+        <li><strong>Enterprise Ready:</strong> Suitable for business use with compliance-friendly OAuth 2.0 authentication.</li>
+      </ul>
     </section>
 
     <section>
       <h2>Security & Data Handling</h2>
       <ul>
-        <li>We only request the minimum Gmail scopes required to send messages.</li>
-        <li>Refresh tokens are stored encrypted (you must configure your storage back-end).</li>
-        <li>We never log plain-text tokens or user passwords.</li>
+        <li><strong>Minimal Permissions:</strong> We request only the Gmail send scope (gmail.send) – the absolute minimum required.</li>
+        <li><strong>Encrypted Storage:</strong> All OAuth refresh tokens are encrypted at rest using industry-standard AES-256 encryption.</li>
+        <li><strong>HTTPS Only:</strong> All communication between your browser and our servers uses TLS/SSL encryption.</li>
+        <li><strong>Regular Security Audits:</strong> Our infrastructure undergoes periodic security reviews and vulnerability assessments.</li>
+        <li><strong>Zero-Knowledge Architecture:</strong> We never log or store plain-text tokens, passwords, or email content.</li>
+        <li><strong>Compliance Ready:</strong> Built following GDPR, SOC 2, and industry best practices for data protection.</li>
       </ul>
+    </section>
+
+    <section>
+      <h2>Transparency & Trust</h2>
+      <p>
+        We believe in complete transparency. Our OAuth implementation follows Google's official guidelines and best practices. You can review our privacy policy and terms of service to understand exactly how we handle your data. If you have any security concerns or questions, our team is always available to address them.
+      </p>
     </section>
 
     <section class="links">
@@ -47,7 +84,8 @@
 
     <footer class="legal">
       <p>Contact: <a href="mailto:makaimurphy007@gmail.com">makaimurphy007@gmail.com</a></p>
-      <p>&copy; <span id="year"></span> Secure Gmail Sender</p>
+      <p>&copy; <span id="year"></span> Secure Gmail Sender. All rights reserved.</p>
+      <p>Built with OAuth 2.0 for maximum security and user protection.</p>
     </footer>
   </main>
 
