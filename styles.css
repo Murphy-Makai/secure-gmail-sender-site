@@ -322,7 +322,7 @@ strong {
   padding: 14px 32px;
   border-radius: 12px;
   background: linear-gradient(135deg, var(--nvidia-green) 0%, var(--accent-hover) 100%);
-  color: #000000;
+  color: #000000 !important;
   text-decoration: none;
   font-weight: 700;
   font-size: 15px;
@@ -335,6 +335,9 @@ strong {
     0 4px 16px rgba(118, 185, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.3),
     0 0 30px rgba(118, 185, 0, 0.2);
+  cursor: pointer;
+  pointer-events: all;
+  z-index: 10;
 }
 
 .btn::before {
