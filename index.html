@@ -87,9 +87,135 @@
     </footer>
   </main>
 
-  <script>
+<script>
     document.getElementById('year').textContent = new Date().getFullYear();
+    
+    // Particle trail animation on link clicks
+    function createParticleTrail(e, targetUrl) {
+      e.preventDefault();
+      const startX = e.clientX;
+      const startY = e.clientY;
+      const particleCount = 30;
+      const particles = [];
+      
+      // Create particles
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.style.position = 'fixed';
+        particle.style.left = startX + 'px';
+        particle.style.top = startY + 'px';
+        particle.style.width = (Math.random() * 8 + 4) + 'px';
+        particle.style.height = particle.style.width;
+        particle.style.borderRadius = '50%';
+        particle.style.pointerEvents = 'none';
+        particle.style.zIndex = '9999';
+        
+        // Alternate between green and black
+        const isGreen = Math.random() > 0.5;
+        particle.style.background = isGreen 
+          ? 'radial-gradient(circle, #76b900, #5a8f00)'
+          : 'radial-gradient(circle, #1a1a1a, #000000)';
+        particle.style.boxShadow = isGreen
+          ? '0 0 20px rgba(118, 185, 0, 0.8), 0 0 40px rgba(118, 185, 0, 0.4)'
+          : '0 0 10px rgba(0, 0, 0, 0.8)';
+        
+        document.body.appendChild(particle);
+        particles.push({
+          element: particle,
+          delay: i * 15,
+          isGreen: isGreen
+        });
+      }
+      
+      // Animate particles shooting to center top
+      particles.forEach((p, index) => {
+        setTimeout(() => {
+          const targetX = window.innerWidth / 2;
+          const targetY = 0;
+          const angle = (Math.random() - 0.5) * 0.3;
+          const spread = (Math.random() - 0.5) * 100;
+          
+          p.element.style.transition = `all ${0.8 + Math.random() * 0.4}s cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+          p.element.style.left = (targetX + spread) + 'px';
+          p.element.style.top = targetY + 'px';
+          p.element.style.opacity = '0';
+          p.element.style.transform = `scale(${Math.random() * 2 + 1}) rotate(${angle * 360}deg)`;
+          
+          // Create tail effect
+          const tail = document.createElement('div');
+          tail.style.position = 'fixed';
+          tail.style.left = startX + 'px';
+          tail.style.top = startY + 'px';
+          tail.style.width = '3px';
+          tail.style.height = '60px';
+          tail.style.pointerEvents = 'none';
+          tail.style.zIndex = '9998';
+          tail.style.transformOrigin = 'top center';
+          
+          const dx = (targetX + spread) - startX;
+          const dy = targetY - startY;
+          const tailAngle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+          
+          tail.style.background = p.isGreen
+            ? 'linear-gradient(180deg, rgba(118, 185, 0, 0.8), transparent)'
+            : 'linear-gradient(180deg, rgba(26, 26, 26, 0.8), transparent)';
+          tail.style.filter = p.isGreen ? 'blur(2px)' : 'blur(1px)';
+          
+          document.body.appendChild(tail);
+          
+          setTimeout(() => {
+            tail.style.transition = `all ${0.8 + Math.random() * 0.4}s cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+            tail.style.left = (targetX + spread) + 'px';
+            tail.style.top = targetY + 'px';
+            tail.style.opacity = '0';
+            tail.style.transform = `rotate(${tailAngle}deg) scaleY(2)`;
+          }, 10);
+          
+          setTimeout(() => tail.remove(), 1500);
+        }, p.delay);
+      });
+      
+      // Create explosion at target
+      setTimeout(() => {
+        const explosion = document.createElement('div');
+        explosion.style.position = 'fixed';
+        explosion.style.left = (window.innerWidth / 2) + 'px';
+        explosion.style.top = '0px';
+        explosion.style.width = '10px';
+        explosion.style.height = '10px';
+        explosion.style.borderRadius = '50%';
+        explosion.style.background = 'radial-gradient(circle, #76b900, transparent)';
+        explosion.style.pointerEvents = 'none';
+        explosion.style.zIndex = '10000';
+        explosion.style.transform = 'translate(-50%, -50%)';
+        document.body.appendChild(explosion);
+        
+        setTimeout(() => {
+          explosion.style.transition = 'all 0.6s ease-out';
+          explosion.style.width = '300px';
+          explosion.style.height = '300px';
+          explosion.style.opacity = '0';
+        }, 10);
+        
+        setTimeout(() => explosion.remove(), 700);
+      }, 600);
+      
+      // Clean up and navigate
+      setTimeout(() => {
+        particles.forEach(p => p.element.remove());
+        window.location.href = targetUrl;
+      }, 1200);
+    }
+    
+    // Add click handlers to buttons
+    document.querySelectorAll('.btn').forEach(btn => {
+      const href = btn.getAttribute('href');
+      if (href && (href.includes('.html') || href.includes('/'))) {
+        btn.addEventListener('click', (e) => createParticleTrail(e, href));
+      }
+    });
   </script>
 </body>
 </html>
+
 
