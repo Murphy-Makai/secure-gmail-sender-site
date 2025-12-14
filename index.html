@@ -90,338 +90,199 @@
 <script>
     document.getElementById('year').textContent = new Date().getFullYear();
     
-    // Advanced Holographic Particle System
-    function createHolographicParticleTrail(e, targetUrl) {
+    // Epic Shooting Star Trail Animation
+    function createShootingStarEffect(e, targetUrl) {
       e.preventDefault();
       const startX = e.clientX;
       const startY = e.clientY;
-      const particleCount = 60;
-      const particles = [];
-      const canvas = document.createElement('canvas');
+      const centerX = window.innerWidth / 2;
+      const centerY = 100;
       
-      // Setup full-screen canvas
-      canvas.style.position = 'fixed';
-      canvas.style.top = '0';
-      canvas.style.left = '0';
-      canvas.style.width = '100vw';
-      canvas.style.height = '100vh';
-      canvas.style.pointerEvents = 'none';
-      canvas.style.zIndex = '99999';
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      document.body.appendChild(canvas);
-      const ctx = canvas.getContext('2d');
+      // Create main energy bolt
+      const bolt = document.createElement('div');
+      bolt.style.position = 'fixed';
+      bolt.style.left = startX + 'px';
+      bolt.style.top = startY + 'px';
+      bolt.style.width = '20px';
+      bolt.style.height = '20px';
+      bolt.style.background = 'radial-gradient(circle, #ffffff, #76b900)';
+      bolt.style.borderRadius = '50%';
+      bolt.style.boxShadow = '0 0 40px #76b900, 0 0 80px #76b900, 0 0 120px #76b900';
+      bolt.style.zIndex = '100000';
+      bolt.style.pointerEvents = 'none';
+      document.body.appendChild(bolt);
       
-      // Initial shockwave pulse
-      createShockwave(startX, startY);
+      // Create glowing trail that follows
+      const trail = document.createElement('div');
+      trail.style.position = 'fixed';
+      trail.style.left = startX + 'px';
+      trail.style.top = startY + 'px';
+      trail.style.width = '8px';
+      trail.style.height = '200px';
+      trail.style.background = 'linear-gradient(180deg, rgba(118,185,0,0.9), rgba(118,185,0,0.5), transparent)';
+      trail.style.transformOrigin = 'top center';
+      trail.style.filter = 'blur(4px)';
+      trail.style.zIndex = '99999';
+      trail.style.pointerEvents = 'none';
       
-      // Create hexagonal grid pattern at click point
-      createHexGrid(startX, startY);
+      // Calculate angle to target
+      const dx = centerX - startX;
+      const dy = centerY - startY;
+      const angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+      trail.style.transform = `rotate(${angle}deg)`;
+      document.body.appendChild(trail);
       
-      // Electromagnetic field lines
-      createFieldLines(startX, startY);
-      
-      // Generate particle system
-      for (let i = 0; i < particleCount; i++) {
-        const angle = (Math.PI * 2 * i) / particleCount;
-        const velocity = 2 + Math.random() * 3;
-        const size = 3 + Math.random() * 6;
-        const isGreen = Math.random() > 0.3;
-        
-        particles.push({
-          x: startX,
-          y: startY,
-          vx: Math.cos(angle) * velocity * 0.3,
-          vy: Math.sin(angle) * velocity * 0.3,
-          targetX: window.innerWidth / 2 + (Math.random() - 0.5) * 150,
-          targetY: 50 + Math.random() * 50,
-          size: size,
-          alpha: 1,
-          color: isGreen ? '#76b900' : '#1a1a1a',
-          glow: isGreen,
-          trail: [],
-          life: 1,
-          rotation: Math.random() * Math.PI * 2,
-          rotationSpeed: (Math.random() - 0.5) * 0.3
-        });
+      // Create sparkle particles that follow
+      const sparkles = [];
+      for (let i = 0; i < 25; i++) {
+        setTimeout(() => {
+          const sparkle = document.createElement('div');
+          sparkle.style.position = 'fixed';
+          sparkle.style.left = startX + 'px';
+          sparkle.style.top = startY + 'px';
+          sparkle.style.width = (Math.random() * 6 + 3) + 'px';
+          sparkle.style.height = sparkle.style.width;
+          sparkle.style.background = Math.random() > 0.3 ? '#76b900' : '#1a1a1a';
+          sparkle.style.borderRadius = '50%';
+          sparkle.style.boxShadow = '0 0 15px rgba(118,185,0,0.8)';
+          sparkle.style.zIndex = '99998';
+          sparkle.style.pointerEvents = 'none';
+          document.body.appendChild(sparkle);
+          sparkles.push(sparkle);
+          
+          const offsetX = (Math.random() - 0.5) * 80;
+          const offsetY = (Math.random() - 0.5) * 80;
+          
+          setTimeout(() => {
+            sparkle.style.transition = `all ${0.6 + Math.random() * 0.3}s cubic-bezier(0.34, 1.56, 0.64, 1)`;
+            sparkle.style.left = (centerX + offsetX) + 'px';
+            sparkle.style.top = (centerY + offsetY) + 'px';
+            sparkle.style.opacity = '0';
+            sparkle.style.transform = `scale(2) rotate(${Math.random() * 720}deg)`;
+          }, 50);
+        }, i * 12);
       }
       
-      // Animation loop with physics
-      let frame = 0;
-      const animate = () => {
-        frame++;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Animate main bolt
+      setTimeout(() => {
+        bolt.style.transition = 'all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        bolt.style.left = centerX + 'px';
+        bolt.style.top = centerY + 'px';
+        bolt.style.width = '60px';
+        bolt.style.height = '60px';
+        bolt.style.transform = 'scale(1.5)';
         
-        // Draw connecting energy beams between nearby particles
-        ctx.strokeStyle = 'rgba(118, 185, 0, 0.15)';
-        ctx.lineWidth = 1;
-        for (let i = 0; i < particles.length; i++) {
-          for (let j = i + 1; j < particles.length; j++) {
-            const dx = particles[i].x - particles[j].x;
-            const dy = particles[i].y - particles[j].y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 100 && frame < 60) {
-              ctx.beginPath();
-              ctx.moveTo(particles[i].x, particles[i].y);
-              ctx.lineTo(particles[j].x, particles[j].y);
-              ctx.stroke();
-            }
-          }
-        }
+        trail.style.transition = 'all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        trail.style.left = centerX + 'px';
+        trail.style.top = centerY + 'px';
+        trail.style.height = '300px';
+        trail.style.opacity = '0';
+      }, 50);
+      
+      // Create massive explosion at impact
+      setTimeout(() => {
+        // Screen flash
+        const flash = document.createElement('div');
+        flash.style.position = 'fixed';
+        flash.style.top = '0';
+        flash.style.left = '0';
+        flash.style.width = '100vw';
+        flash.style.height = '100vh';
+        flash.style.background = 'radial-gradient(circle at 50% 100px, rgba(118,185,0,0.4), transparent 50%)';
+        flash.style.zIndex = '99997';
+        flash.style.pointerEvents = 'none';
+        document.body.appendChild(flash);
         
-        let allReached = true;
-        particles.forEach((p, idx) => {
-          // Physics-based movement with attraction to target
-          const dx = p.targetX - p.x;
-          const dy = p.targetY - p.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          
-          if (dist > 5) {
-            allReached = false;
-            const force = 0.05;
-            p.vx += (dx / dist) * force;
-            p.vy += (dy / dist) * force;
+        setTimeout(() => {
+          flash.style.transition = 'opacity 0.5s ease-out';
+          flash.style.opacity = '0';
+        }, 50);
+        setTimeout(() => flash.remove(), 600);
+        
+        // Central burst
+        bolt.style.transition = 'all 0.5s ease-out';
+        bolt.style.width = '400px';
+        bolt.style.height = '400px';
+        bolt.style.opacity = '0';
+        
+        // Explosion waves
+        for (let i = 0; i < 4; i++) {
+          setTimeout(() => {
+            const wave = document.createElement('div');
+            wave.style.position = 'fixed';
+            wave.style.left = centerX + 'px';
+            wave.style.top = centerY + 'px';
+            wave.style.width = '20px';
+            wave.style.height = '20px';
+            wave.style.border = '3px solid #76b900';
+            wave.style.borderRadius = '50%';
+            wave.style.transform = 'translate(-50%, -50%)';
+            wave.style.boxShadow = '0 0 30px rgba(118,185,0,0.8)';
+            wave.style.zIndex = '99996';
+            wave.style.pointerEvents = 'none';
+            document.body.appendChild(wave);
             
-            // Apply drag
-            p.vx *= 0.98;
-            p.vy *= 0.98;
-          } else {
-            p.vx *= 0.8;
-            p.vy *= 0.8;
-            p.life *= 0.95;
-          }
-          
-          p.x += p.vx;
-          p.y += p.vy;
-          p.rotation += p.rotationSpeed;
-          
-          // Store trail
-          p.trail.push({ x: p.x, y: p.y, alpha: p.alpha });
-          if (p.trail.length > 20) p.trail.shift();
-          
-          // Draw electromagnetic trail
-          ctx.strokeStyle = p.glow ? 'rgba(118, 185, 0, 0.3)' : 'rgba(26, 26, 26, 0.2)';
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          p.trail.forEach((pos, i) => {
-            if (i === 0) ctx.moveTo(pos.x, pos.y);
-            else ctx.lineTo(pos.x, pos.y);
-          });
-          ctx.stroke();
-          
-          // Draw particle core with glow
-          if (p.glow) {
-            const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 3);
-            gradient.addColorStop(0, 'rgba(118, 185, 0, ' + p.alpha + ')');
-            gradient.addColorStop(0.3, 'rgba(118, 185, 0, ' + (p.alpha * 0.5) + ')');
-            gradient.addColorStop(1, 'rgba(118, 185, 0, 0)');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(p.x - p.size * 3, p.y - p.size * 3, p.size * 6, p.size * 6);
-          }
-          
-          // Draw particle with rotation
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.rotation);
-          ctx.fillStyle = p.color;
-          ctx.shadowBlur = p.glow ? 15 : 5;
-          ctx.shadowColor = p.glow ? '#76b900' : '#000';
-          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
-          ctx.restore();
-          
-          p.alpha = Math.max(0, p.life);
-        });
-        
-        // Continue animation
-        if (frame < 90) {
-          requestAnimationFrame(animate);
-        } else {
-          // Epic convergence explosion
-          createConvergenceExplosion(window.innerWidth / 2, 50);
-          setTimeout(() => {
-            canvas.remove();
-            window.location.href = targetUrl;
-          }, 800);
+            setTimeout(() => {
+              wave.style.transition = 'all 0.8s ease-out';
+              wave.style.width = '600px';
+              wave.style.height = '600px';
+              wave.style.opacity = '0';
+              wave.style.borderWidth = '1px';
+            }, 10);
+            
+            setTimeout(() => wave.remove(), 850);
+          }, i * 80);
         }
-      };
-      
-      animate();
-    }
-    
-    // Initial shockwave effect
-    function createShockwave(x, y) {
-      const wave = document.createElement('div');
-      wave.style.position = 'fixed';
-      wave.style.left = x + 'px';
-      wave.style.top = y + 'px';
-      wave.style.width = '10px';
-      wave.style.height = '10px';
-      wave.style.border = '2px solid #76b900';
-      wave.style.borderRadius = '50%';
-      wave.style.transform = 'translate(-50%, -50%)';
-      wave.style.pointerEvents = 'none';
-      wave.style.zIndex = '99998';
-      wave.style.boxShadow = '0 0 30px rgba(118, 185, 0, 0.8), inset 0 0 30px rgba(118, 185, 0, 0.5)';
-      document.body.appendChild(wave);
-      
-      setTimeout(() => {
-        wave.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-        wave.style.width = '400px';
-        wave.style.height = '400px';
-        wave.style.opacity = '0';
-        wave.style.borderWidth = '1px';
-      }, 10);
-      
-      setTimeout(() => wave.remove(), 700);
-    }
-    
-    // Hexagonal grid pattern
-    function createHexGrid(x, y) {
-      for (let i = 0; i < 12; i++) {
-        const hex = document.createElement('div');
-        hex.style.position = 'fixed';
-        hex.style.left = x + 'px';
-        hex.style.top = y + 'px';
-        hex.style.width = '40px';
-        hex.style.height = '40px';
-        hex.style.border = '1px solid rgba(118, 185, 0, 0.4)';
-        hex.style.transform = `translate(-50%, -50%) rotate(${i * 30}deg)`;
-        hex.style.clipPath = 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)';
-        hex.style.pointerEvents = 'none';
-        hex.style.zIndex = '99997';
-        document.body.appendChild(hex);
         
-        setTimeout(() => {
-          hex.style.transition = 'all 0.8s ease-out';
-          hex.style.opacity = '0';
-          hex.style.transform = `translate(-50%, -50%) rotate(${i * 30 + 180}deg) scale(3)`;
-        }, i * 30);
-        
-        setTimeout(() => hex.remove(), 1000);
-      }
-    }
-    
-    // Electromagnetic field lines
-    function createFieldLines(x, y) {
-      for (let i = 0; i < 8; i++) {
-        const line = document.createElement('div');
-        line.style.position = 'fixed';
-        line.style.left = x + 'px';
-        line.style.top = y + 'px';
-        line.style.width = '2px';
-        line.style.height = '100px';
-        line.style.background = 'linear-gradient(180deg, rgba(118, 185, 0, 0.6), transparent)';
-        line.style.transformOrigin = 'top center';
-        line.style.transform = `translate(-50%, -50%) rotate(${i * 45}deg)`;
-        line.style.pointerEvents = 'none';
-        line.style.zIndex = '99996';
-        line.style.filter = 'blur(1px)';
-        document.body.appendChild(line);
-        
-        setTimeout(() => {
-          line.style.transition = 'all 0.5s ease-out';
-          line.style.opacity = '0';
-          line.style.height = '200px';
-        }, i * 20);
-        
-        setTimeout(() => line.remove(), 700);
-      }
-    }
-    
-    // Epic convergence explosion
-    function createConvergenceExplosion(x, y) {
-      // Central flash
-      const flash = document.createElement('div');
-      flash.style.position = 'fixed';
-      flash.style.left = x + 'px';
-      flash.style.top = y + 'px';
-      flash.style.width = '20px';
-      flash.style.height = '20px';
-      flash.style.borderRadius = '50%';
-      flash.style.background = 'radial-gradient(circle, #ffffff, #76b900, transparent)';
-      flash.style.transform = 'translate(-50%, -50%)';
-      flash.style.pointerEvents = 'none';
-      flash.style.zIndex = '100000';
-      flash.style.boxShadow = '0 0 100px rgba(118, 185, 0, 1)';
-      document.body.appendChild(flash);
-      
-      setTimeout(() => {
-        flash.style.transition = 'all 0.6s ease-out';
-        flash.style.width = '600px';
-        flash.style.height = '600px';
-        flash.style.opacity = '0';
-      }, 10);
-      
-      // Shockwave rings
-      for (let i = 0; i < 3; i++) {
-        setTimeout(() => {
-          const ring = document.createElement('div');
-          ring.style.position = 'fixed';
-          ring.style.left = x + 'px';
-          ring.style.top = y + 'px';
-          ring.style.width = '50px';
-          ring.style.height = '50px';
-          ring.style.border = '3px solid #76b900';
-          ring.style.borderRadius = '50%';
-          ring.style.transform = 'translate(-50%, -50%)';
-          ring.style.pointerEvents = 'none';
-          ring.style.zIndex = '99999';
-          ring.style.boxShadow = '0 0 40px rgba(118, 185, 0, 0.8)';
-          document.body.appendChild(ring);
+        // Shooting particles outward
+        for (let i = 0; i < 40; i++) {
+          const particle = document.createElement('div');
+          const pAngle = (Math.PI * 2 * i) / 40;
+          const distance = 200 + Math.random() * 150;
+          
+          particle.style.position = 'fixed';
+          particle.style.left = centerX + 'px';
+          particle.style.top = centerY + 'px';
+          particle.style.width = (3 + Math.random() * 5) + 'px';
+          particle.style.height = particle.style.width;
+          particle.style.background = Math.random() > 0.4 ? '#76b900' : '#1a1a1a';
+          particle.style.borderRadius = '50%';
+          particle.style.boxShadow = '0 0 10px rgba(118,185,0,0.8)';
+          particle.style.zIndex = '99995';
+          particle.style.pointerEvents = 'none';
+          document.body.appendChild(particle);
           
           setTimeout(() => {
-            ring.style.transition = 'all 0.8s ease-out';
-            ring.style.width = '800px';
-            ring.style.height = '800px';
-            ring.style.opacity = '0';
-            ring.style.borderWidth = '1px';
+            particle.style.transition = 'all 1s ease-out';
+            particle.style.left = (centerX + Math.cos(pAngle) * distance) + 'px';
+            particle.style.top = (centerY + Math.sin(pAngle) * distance) + 'px';
+            particle.style.opacity = '0';
           }, 10);
           
-          setTimeout(() => ring.remove(), 900);
-        }, i * 100);
-      }
+          setTimeout(() => particle.remove(), 1050);
+        }
+      }, 750);
       
-      // Debris particles
-      for (let i = 0; i < 30; i++) {
-        const debris = document.createElement('div');
-        const angle = (Math.PI * 2 * i) / 30;
-        const distance = 150 + Math.random() * 100;
-        debris.style.position = 'fixed';
-        debris.style.left = x + 'px';
-        debris.style.top = y + 'px';
-        debris.style.width = (2 + Math.random() * 4) + 'px';
-        debris.style.height = debris.style.width;
-        debris.style.borderRadius = '50%';
-        debris.style.background = Math.random() > 0.5 ? '#76b900' : '#1a1a1a';
-        debris.style.transform = 'translate(-50%, -50%)';
-        debris.style.pointerEvents = 'none';
-        debris.style.zIndex = '99998';
-        debris.style.boxShadow = '0 0 10px rgba(118, 185, 0, 0.6)';
-        document.body.appendChild(debris);
-        
-        setTimeout(() => {
-          debris.style.transition = 'all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-          debris.style.left = (x + Math.cos(angle) * distance) + 'px';
-          debris.style.top = (y + Math.sin(angle) * distance) + 'px';
-          debris.style.opacity = '0';
-        }, 10);
-        
-        setTimeout(() => debris.remove(), 1100);
-      }
-      
-      setTimeout(() => flash.remove(), 700);
+      // Navigate after animation
+      setTimeout(() => {
+        bolt.remove();
+        trail.remove();
+        sparkles.forEach(s => s.remove());
+        window.location.href = targetUrl;
+      }, 1500);
     }
     
-    // Attach to all navigation buttons
+    // Attach to all buttons
     document.querySelectorAll('.btn').forEach(btn => {
       const href = btn.getAttribute('href');
       if (href && (href.includes('.html') || href.includes('/'))) {
-        btn.addEventListener('click', (e) => createHolographicParticleTrail(e, href));
+        btn.addEventListener('click', (e) => createShootingStarEffect(e, href));
       }
     });
   </script>
 </body>
 </html>
+
 
 
 
